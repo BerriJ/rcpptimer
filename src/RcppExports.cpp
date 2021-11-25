@@ -2,6 +2,7 @@
 // Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #include "../inst/include/RcppClock.h"
+#include <RcppArmadillo.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -22,9 +23,23 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// test
+void test(Rcpp::CharacterVector tick_names, Rcpp::CharacterVector tock_names, arma::vec tick_times, arma::vec tock_times);
+RcppExport SEXP _RcppClock_test(SEXP tick_namesSEXP, SEXP tock_namesSEXP, SEXP tick_timesSEXP, SEXP tock_timesSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type tick_names(tick_namesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type tock_names(tock_namesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type tick_times(tick_timesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type tock_times(tock_timesSEXP);
+    test(tick_names, tock_names, tick_times, tock_times);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_RcppClock_fibonacci", (DL_FUNC) &_RcppClock_fibonacci, 2},
+    {"_RcppClock_test", (DL_FUNC) &_RcppClock_test, 4},
     {NULL, NULL, 0}
 };
 

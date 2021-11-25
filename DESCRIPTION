@@ -8,7 +8,7 @@ Maintainer: Zach DeBruine <zacharydebruine@gmail.com>
 Description: Time the execution of overlapping or unique 'Rcpp' code chunks using convenient methods, seamlessly write timing results to an 'RcppClock' object in the R global environment, and summarize and/or plot the results in R.
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.7), ggplot2
-LinkingTo: Rcpp
+LinkingTo: RcppArmadillo, Rcpp
 RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 3.0.0)

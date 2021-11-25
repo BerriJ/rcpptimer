@@ -1,0 +1,2 @@
+ManuelHentschel/vscDebugger@*release
+

@@ -26,3 +26,7 @@ fibonacci <- function(n, reps = 10L) {
     invisible(.Call(`_RcppClock_fibonacci`, n, reps))
 }
 
+test <- function(tick_names, tock_names, tick_times, tock_times) {
+    invisible(.Call(`_RcppClock_test`, tick_names, tock_names, tick_times, tock_times))
+}
+
