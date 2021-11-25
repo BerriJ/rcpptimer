@@ -24,22 +24,19 @@ BEGIN_RCPP
 END_RCPP
 }
 // test
-void test(Rcpp::CharacterVector tick_names, Rcpp::CharacterVector tock_names, arma::vec tick_times, arma::vec tock_times);
-RcppExport SEXP _RcppClock_test(SEXP tick_namesSEXP, SEXP tock_namesSEXP, SEXP tick_timesSEXP, SEXP tock_timesSEXP) {
+int test();
+RcppExport SEXP _RcppClock_test() {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type tick_names(tick_namesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type tock_names(tock_namesSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type tick_times(tick_timesSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type tock_times(tock_timesSEXP);
-    test(tick_names, tock_names, tick_times, tock_times);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(test());
+    return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_RcppClock_fibonacci", (DL_FUNC) &_RcppClock_fibonacci, 2},
-    {"_RcppClock_test", (DL_FUNC) &_RcppClock_test, 4},
+    {"_RcppClock_test", (DL_FUNC) &_RcppClock_test, 0},
     {NULL, NULL, 0}
 };
 

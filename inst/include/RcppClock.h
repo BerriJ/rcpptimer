@@ -1,8 +1,15 @@
 #include <RcppArmadillo.h>
 #include <chrono>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <string>
+#include <map>
 
 #define duration(a) std::chrono::duration_cast<std::chrono::nanoseconds>(a).count()
 #define now() std::chrono::high_resolution_clock::now()
+
+typedef std::map<std::pair<std::string, int>, std::chrono::high_resolution_clock::time_point> TimesMap;
 
 namespace Rcpp
 {
@@ -34,19 +41,50 @@ namespace Rcpp
     // calculate timer durations
     void stop(std::string var_name)
     {
-      for (unsigned int i = 0; i < tick_names.size(); ++i)
+      std::pair<TimesMap::iterator, bool> insertTime;
+      std::pair<std::string, int> key;
+
+      /* Sort ticks and tocks by tick_name and tock_name */
+
+      TimesMap tickmap;
+      for (std::size_t i = 0; i < tick_names.size(); ++i)
       {
-        for (unsigned int j = 0; j < tock_names.size(); ++j)
-        {
-          if (tick_names[i] == tock_names[j])
-          {
-            timers.push_back(duration(tock_times[j] - tick_times[i]));
-            tickers.push_back(tick_names[i]);
-            tock_times.erase(tock_times.begin() + j);
-            tock_names.erase(tock_names.begin() + j);
-            break;
-          }
-        }
+        key.first = tick_names[i];
+        key.second = i;
+        insertTime = tickmap.insert(
+            std::pair<std::pair<std::string, int>, std::chrono::high_resolution_clock::time_point>(key, tick_times[i]));
+      }
+
+      TimesMap tockmap;
+      for (std::size_t i = 0; i < tock_names.size(); ++i)
+      {
+        key.first = tock_names[i];
+        key.second = i;
+        insertTime = tockmap.insert(
+            std::pair<std::pair<std::string, int>, std::chrono::high_resolution_clock::time_point>(key, tock_times[i]));
+      }
+
+      std::vector<std::string> keys;
+      keys.reserve(tickmap.size());
+      std::vector<std::chrono::high_resolution_clock::time_point> ticks;
+      ticks.reserve(tickmap.size());
+      for (auto kv : tickmap)
+      {
+        keys.push_back(kv.first.first);
+        ticks.push_back(kv.second);
+      }
+
+      std::vector<std::chrono::high_resolution_clock::time_point> tocks;
+      tocks.reserve(tockmap.size());
+      for (auto kv : tockmap)
+      {
+        tocks.push_back(kv.second);
+      }
+
+      for (std::size_t i = 0; i < ticks.size(); ++i)
+      {
+        tickers.push_back(keys[i]);
+        timers.push_back(duration(tocks[i] - ticks[i]));
       }
       DataFrame df = DataFrame::create(Named("ticker") = tickers, Named("timer") = timers);
       df.attr("class") = "RcppClock";
