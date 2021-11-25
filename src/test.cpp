@@ -6,7 +6,6 @@
 #include <map>
 
 // #include <RcppClock.h>
-
 typedef std::map<std::pair<std::string, int>, double> TimesMap;
 
 // [[Rcpp::export]]
@@ -45,16 +44,20 @@ void test(Rcpp::CharacterVector tick_names,
             std::pair<std::pair<std::string, int>, double>(key, tock_timesc[i]));
     }
 
-    std::cout << "\nTicks\n\n";
-    for (auto const &time : tickmap)
+    std::vector<std::string> keys;
+    keys.reserve(tickmap.size());
+    std::vector<double> ticks;
+    ticks.reserve(tickmap.size());
+    for (auto kv : tickmap)
     {
-        std::cout << time.first.first << " | " << time.first.second << " | " << time.second << "\n";
+        keys.push_back(kv.first.first);
+        ticks.push_back(kv.second);
     }
 
-    std::cout << "\nTocks\n";
-    for (auto const &time : tockmap)
+    std::vector<double> tocks;
+    tocks.reserve(tockmap.size());
+    for (auto kv : tockmap)
     {
-        std::cout << time.first.first << " | " << time.first.second << " | " << time.second << "\n";
+        tocks.push_back(kv.second);
     }
-    std::cout << std::flush;
 }
